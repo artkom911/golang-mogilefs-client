@@ -185,6 +185,11 @@ func (m *MogileFsClient) Create(key string, class string, r io.Reader) (close_va
 		if err == nil {
 			client := &http.Client{}
 			putRes, putErr := client.Do(putRq)
+			defer func() {
+				if putRes != nil && putRes.Body != nil {
+					putRes.Body.Close()
+				}
+			}()
 			err = putErr
 			if err == nil {
 				if putRes.StatusCode == 200 {
