@@ -151,7 +151,7 @@ func (m *MogileFsClient) Fetch(key string) (r io.ReadCloser, err error) {
 			rqResp, rqErr := http.Get(path)
 			err = rqErr
 			if err == nil {
-				if rqResp.StatusCode == 200 {
+				if rqResp.StatusCode >= 200  && rqResp.StatusCode < 300 {
 					r = rqResp.Body
 					break
 				} else {
@@ -192,7 +192,7 @@ func (m *MogileFsClient) Create(key string, class string, r io.Reader) (close_va
 			}()
 			err = putErr
 			if err == nil {
-				if putRes.StatusCode == 200 {
+				if putRes.StatusCode >= 200  && putRes.StatusCode < 300 {
 					close_args := make(url.Values)
 					close_args.Set("domain", create_args.Get("domain"))
 					close_args.Set("key", create_args.Get("key"))
